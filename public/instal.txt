@@ -1,0 +1,2 @@
+ how to instal snowpack in typescript command   === this is a bundler
+npx create-snowpack-app . --template @snowpack/app-template-blank-typescript --force
