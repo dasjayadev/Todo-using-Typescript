@@ -15,8 +15,8 @@ const list = document.querySelector<HTMLUListElement>("#list")
 const form = document.querySelector<HTMLFormElement>("#new-task-form")
 const input = document.querySelector<HTMLInputElement>("#new-task-titel")
 
-const task: Task[] = [] // array of defarent task item stored inside an array
-
+const tasks: Task[] = loadTasks() // array of defarent task item stored inside an array
+tasks.forEach(addListItem)
 form?.addEventListener("submit",e=>{
   e.preventDefault()
 
@@ -30,7 +30,8 @@ form?.addEventListener("submit",e=>{
     createdAt:new Date(),
   }
 
-  task.push(newTask)
+  tasks.push(newTask)
+  saveTasks()
 
   addListItem(newTask)
   input.value = "" //use for empty the input boxevery time you entered
@@ -44,6 +45,8 @@ function addListItem(task: Task){
   checkbox.addEventListener("change",()=>{
     task.completed = checkbox.checked
     console.log(task);   // check box is true or false
+
+    saveTasks()
   })
 
   checkbox.type= "checkBox"
@@ -51,4 +54,12 @@ function addListItem(task: Task){
   lable.append(checkbox,task.title)
   item.append(lable)
   list?.append(item)
+}
+function saveTasks(){
+  localStorage.setItem("tasks",JSON.stringify(tasks))
+}
+function loadTasks(): Task[] {
+  const taskJson = localStorage.getItem("tasks")
+  if(taskJson == null) return []
+  return JSON.parse(taskJson)
 }
